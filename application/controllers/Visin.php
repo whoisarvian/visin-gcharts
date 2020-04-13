@@ -14,7 +14,9 @@ class Visin extends CI_Controller {
         $output['region']=$this->region($data);
         $output['sales']=$this->sales($data);
         $output['produk']=$this->produk($data);
-        $output['bulanan']=$this->bulanan($data);    
+        $output['bulanan']=$this->bulanan($data);
+        $output['total_biaya']=$this->total_biaya($data);
+        $output['biaya_per_item']=$this->biaya_per_item($data);         
         //mengirim variabel $output ke view      
         $this->load->view('visin',$output);
         //echo json_encode($output['bulanan']);
@@ -139,5 +141,53 @@ class Visin extends CI_Controller {
             array_push($tabs,$dt);
         }
         return json_encode($tabs);  
+    }
+
+    function total_biaya($data)
+    {
+        $result=array();
+        foreach($data as $row)
+        {
+            if(isset($result[$row->Item]) == false)
+            {
+                $result[$row->Item]=$row->Total;
+            }else{
+                $total=$result[$row->Item];
+                $result[$row->Item]=$total + $row->Total;
+            }
+        };
+        //konversi dalam format tabulasi
+        $keys=array_keys($result);
+        $tabs=[['Item','Total']];
+        foreach($keys as $row)
+        {
+            $dt=[$row,$result[$row]];
+            array_push($tabs,$dt);
+        }
+        return json_encode($tabs);
+    }
+
+    function biaya_per_item($data)
+    {
+        $result=array();
+        foreach($data as $row)
+        {
+            if(isset($result[$row->Item]) == false)
+            {
+                $result[$row->Item]=$row->UnitCost;
+            }else{
+                $unitCost=$result[$row->Item];
+                $result[$row->Item]=$unitCost + $row->UnitCost;
+            }
+        };
+        //konversi dalam format tabulasi
+        $keys=array_keys($result);
+        $tabs=[['Item','UnitCost']];
+        foreach($keys as $row)
+        {
+            $dt=[$row,$result[$row]];
+            array_push($tabs,$dt);
+        }
+        return json_encode($tabs);
     }
 }

@@ -50,6 +50,24 @@
             drawChart(bulanan['dataArray'],'bar','bulanan');
         });
 
+        var total_biaya=[];
+        total_biaya['dataStr'] = '<?php echo $total_biaya;?>';        
+        total_biaya['dataArray'] = JSON.parse(total_biaya['dataStr']);   
+        //menggambar grafik
+        google.charts.setOnLoadCallback(function(){
+            drawChart(produk['dataArray'], 'pie','produk');
+            drawChart(total_biaya['dataArray'], 'pie','total_biaya');
+        });
+
+        var biaya_per_item=[];
+        biaya_per_item['dataStr'] = '<?php echo $biaya_per_item;?>';        
+        biaya_per_item['dataArray'] = JSON.parse(biaya_per_item['dataStr']);   
+        //menggambar grafik
+        google.charts.setOnLoadCallback(function(){
+            drawChart(produk['dataArray'], 'bar','produk');
+            drawChart(biaya_per_item['dataArray'], 'bar','biaya_per_item');
+        });
+
         // Menentukan data yang akan ditampilkan
         function drawChart(dataArray,type,container) {
             // Membuat data tabel yang sesuai dengan format google chart dari sumber data array javascript
@@ -107,6 +125,18 @@
                 <div class="uk-card uk-card-default uk-card-small uk-card-body" >
                     <h3 class="uk-card-title">Penjualan Bulanan</h3>
                     <div id="bulanan" style="height:350px;"></div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-small uk-card-body" >
+                    <h3 class="uk-card-title">Total Biaya Produk</h3>
+                    <div id="total_biaya" style="height:350px;"></div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-small uk-card-body" >
+                    <h3 class="uk-card-title">Biaya @Produk Region</h3>
+                    <div id="biaya_per_item" style="height:350px;"></div>
                 </div>
             </div>
         </div>
